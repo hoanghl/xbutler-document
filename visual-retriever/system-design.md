@@ -1,3 +1,14 @@
+<p style="text-align: center;font-size: 35px;font-weight: 900">Visual retriever</p>
+
+<img 
+    style="display: block; 
+           margin-left: auto;
+           margin-right: auto;
+           width: 80%;"
+    src="diagram.svg" 
+    alt="visual-retriever-diagram">
+</img>
+
 # System design
 
 version: v1.1

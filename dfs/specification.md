@@ -1,4 +1,4 @@
-<p style="text-align: center;font-size: 35px;font-weight: 900">System specification</p>
+<p style="text-align: center;font-size: 35px;font-weight: 900">DFS</p>
 
 # Overview
 
@@ -90,7 +90,7 @@ When the current Master node is down and the backup Master node becomes the curr
 
 # Packet format
 
-The network's working is based on a tailored protocol. For more info about packets used in protocol, please visit: [Link](sub_documents/flows.md)
+The network's working is based on a tailored protocol. For more info about packets used in protocol, please visit: [Link](sub_documents/packets.md)
 
 # Flow
 

@@ -32,3 +32,15 @@ DFS initialization allows configuration to set up the following:
 </p>
 
 **_Front-end_** invokes a function in **_Native module_**, from which a DFS packet (`GracefulShutdown`) is sent to **_dfs_receiver_**. When this packet is processed **_dfs_processor_**, it trigger _Graceful shutdown_ procedure in DFS.
+
+## Feat: Exchange log message between DFS and Front-end
+
+<p align="center">
+    <img src="res/log-exchange.drawio.svg" width="800">
+</p>
+
+**_Front-end_** invokes a function in **_Native module_**, from which a DFS packet (`GracefulShutdown`) is sent to **_dfs_receiver_**. When this packet is processed **_dfs_processor_**, it trigger _Graceful shutdown_ procedure in DFS.
+
+When DFS has any log messages (from either receiver, processor or sender), those are formatted as Log instances. Log instances are converted into bytes to transmit to **_DfsModule_** via UDS protocol for fast message exchanging.
+
+At **_DfsModule_**, a UDS server (use Coroutine) is hosted to receive incoming byte-encoded Log message. DfsModule decodes and transmits to **_Front-end_**.

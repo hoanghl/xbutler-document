@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3" pages="6">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3" pages="7">
   <diagram name="app-component" id="BVCaPAYkqAic5rKPLI_f">
-    <mxGraphModel dx="1781" dy="1123" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1801" dy="1089" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -478,6 +478,85 @@
         </mxCell>
         <mxCell id="az-VHOuGi07jpQQkqKvk-15" value="Thread:dfs_sender" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="az-VHOuGi07jpQQkqKvk-1">
           <mxGeometry x="700" y="270" width="150" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="feat/log-exchange" id="cevmTUwMAwx4jZEstARY">
+    <mxGraphModel dx="1250" dy="871" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-0" />
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-1" parent="XlupUd9Ih-bxfIsf6Ot6-0" />
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=1;curved=0;startArrow=classic;startFill=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="XlupUd9Ih-bxfIsf6Ot6-1" source="XlupUd9Ih-bxfIsf6Ot6-4" target="XlupUd9Ih-bxfIsf6Ot6-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="605" y="430" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-3" value="send log message&lt;div&gt;as event&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="XlupUd9Ih-bxfIsf6Ot6-2">
+          <mxGeometry x="-0.3125" y="1" relative="1" as="geometry">
+            <mxPoint x="30" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-4" value="MainThread:Front-end" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="60" y="340" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-5" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Feat: Exchange log message between DFS and Front-end&lt;/h1&gt;&lt;div&gt;When DFS has any log messages, those are formatted as Log instances. Log instances are converted into bytes to transmit to DfsModule via UDS protocol for fast message exchanging.&lt;/div&gt;&lt;p&gt;At DfsModule, a UDS server (use Coroutine) is hosted to receive incoming byte-encoded Log message. DfsModule decodes and transmits to Front-end.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="20" y="20" width="460" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="6biPyUD7srJQTwKbk1-0-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="XlupUd9Ih-bxfIsf6Ot6-1" source="XlupUd9Ih-bxfIsf6Ot6-7" target="pG65pRJrjJW_2z6DnRPa-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pG65pRJrjJW_2z6DnRPa-4" value="bytes of&lt;div&gt;Log message&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="6biPyUD7srJQTwKbk1-0-1">
+          <mxGeometry x="0.0692" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-7" value="MainThread:DfsModule" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="350" y="340" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6biPyUD7srJQTwKbk1-0-4" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="XlupUd9Ih-bxfIsf6Ot6-1" source="XlupUd9Ih-bxfIsf6Ot6-8" target="6biPyUD7srJQTwKbk1-0-0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pG65pRJrjJW_2z6DnRPa-5" value="log" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="6biPyUD7srJQTwKbk1-0-4">
+          <mxGeometry x="-0.0831" y="-1" relative="1" as="geometry">
+            <mxPoint x="-2" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-8" value="Thread:dfs_processor" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="950" y="340" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6biPyUD7srJQTwKbk1-0-2" value="log" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;curved=0;" edge="1" parent="XlupUd9Ih-bxfIsf6Ot6-1" source="XlupUd9Ih-bxfIsf6Ot6-9" target="6biPyUD7srJQTwKbk1-0-0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="719.9999999999998" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-9" value="Thread:dfs_receiver" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="950" y="260" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6biPyUD7srJQTwKbk1-0-5" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="XlupUd9Ih-bxfIsf6Ot6-1" source="XlupUd9Ih-bxfIsf6Ot6-10" target="6biPyUD7srJQTwKbk1-0-0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pG65pRJrjJW_2z6DnRPa-6" value="log" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="6biPyUD7srJQTwKbk1-0-5">
+          <mxGeometry x="0.1287" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XlupUd9Ih-bxfIsf6Ot6-10" value="Thread:dfs_sender" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="950" y="420" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pG65pRJrjJW_2z6DnRPa-2" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="XlupUd9Ih-bxfIsf6Ot6-1" source="6biPyUD7srJQTwKbk1-0-0" target="pG65pRJrjJW_2z6DnRPa-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pG65pRJrjJW_2z6DnRPa-3" value="Log message transmitted&lt;div&gt;via&amp;nbsp;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;UDS protocol&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="pG65pRJrjJW_2z6DnRPa-2">
+          <mxGeometry x="0.2504" y="-1" relative="1" as="geometry">
+            <mxPoint x="23" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6biPyUD7srJQTwKbk1-0-0" value="Log builder" style="rounded=0;whiteSpace=wrap;html=1;rotation=-90;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="720" y="355" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pG65pRJrjJW_2z6DnRPa-1" value="UDS protocol (LocalSocket in Android)" style="rounded=0;whiteSpace=wrap;html=1;rotation=-90;" vertex="1" parent="XlupUd9Ih-bxfIsf6Ot6-1">
+          <mxGeometry x="510" y="355" width="265" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

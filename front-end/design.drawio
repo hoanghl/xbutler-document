@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6" pages="4">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6" pages="5">
   <diagram name="app-component" id="BVCaPAYkqAic5rKPLI_f">
     <mxGraphModel dx="1781" dy="1123" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
@@ -373,6 +373,66 @@
         </mxCell>
         <mxCell id="ZSb5fHrcsyOhHhMHjhXw-8" value="Thread:dfs_sender" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
           <mxGeometry x="780" y="410" width="150" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="feat/start-dfs" id="vJWqguQ2Cfwt7UooFn4G">
+    <mxGraphModel dx="1077" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-0" />
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-1" parent="5z_HoaNmOr6Ug1A4OAgu-0" />
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=1;curved=0;startArrow=none;startFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="5z_HoaNmOr6Ug1A4OAgu-1" source="5z_HoaNmOr6Ug1A4OAgu-4" target="5z_HoaNmOr6Ug1A4OAgu-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="655" y="420" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-3" value="invoke function to start&lt;div&gt;DFS-related threads&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="5z_HoaNmOr6Ug1A4OAgu-2">
+          <mxGeometry x="-0.3125" y="1" relative="1" as="geometry">
+            <mxPoint x="38" y="-19" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-4" value="MainThread:UI" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="5z_HoaNmOr6Ug1A4OAgu-1">
+          <mxGeometry x="110" y="330" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-7" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Feat: Start DFS with configurations&lt;/h1&gt;&lt;p&gt;- DfsModule creates Android foreground service, in this service, it creates new thread to run dfs_processor. In thread:dfs_processor, it then creates 2 new threads for receiving and sending packets of DFS protocol.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="5z_HoaNmOr6Ug1A4OAgu-1">
+          <mxGeometry x="10" y="10" width="390" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="4MOD_gYOwgpBefeBmbJU-0" value="Create new thread&lt;div&gt;(together with passing parameters)&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="5z_HoaNmOr6Ug1A4OAgu-1" source="5z_HoaNmOr6Ug1A4OAgu-10" target="5z_HoaNmOr6Ug1A4OAgu-6">
+          <mxGeometry x="-0.0027" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-10" value="MainThread:DfsModule" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="5z_HoaNmOr6Ug1A4OAgu-1">
+          <mxGeometry x="435" y="330" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4MOD_gYOwgpBefeBmbJU-8" value="Android Foreground service" style="swimlane;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;rounded=1;dashed=1;dashPattern=1 2;" vertex="1" parent="5z_HoaNmOr6Ug1A4OAgu-1">
+          <mxGeometry x="680" y="200" width="450" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="4MOD_gYOwgpBefeBmbJU-3" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="4MOD_gYOwgpBefeBmbJU-8" source="5z_HoaNmOr6Ug1A4OAgu-6" target="5z_HoaNmOr6Ug1A4OAgu-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4MOD_gYOwgpBefeBmbJU-6" value="Create new thread" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="4MOD_gYOwgpBefeBmbJU-3">
+          <mxGeometry x="-0.4573" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4MOD_gYOwgpBefeBmbJU-4" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="4MOD_gYOwgpBefeBmbJU-8" source="5z_HoaNmOr6Ug1A4OAgu-6" target="5z_HoaNmOr6Ug1A4OAgu-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4MOD_gYOwgpBefeBmbJU-7" value="Create new thread" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="4MOD_gYOwgpBefeBmbJU-4">
+          <mxGeometry x="-0.4137" y="1" relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-6" value="Thread:dfs_processor" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="4MOD_gYOwgpBefeBmbJU-8">
+          <mxGeometry x="100" y="130" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-12" value="Thread:dfs_receiver" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="4MOD_gYOwgpBefeBmbJU-8">
+          <mxGeometry x="280" y="60" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5z_HoaNmOr6Ug1A4OAgu-14" value="Thread:dfs_sender" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="4MOD_gYOwgpBefeBmbJU-8">
+          <mxGeometry x="280" y="200" width="150" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

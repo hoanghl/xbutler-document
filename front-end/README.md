@@ -24,3 +24,11 @@ DFS initialization allows configuration to set up the following:
 
 - DNS ip and port
 - Receive port of **_dfs_receiver_**
+
+## Feat: Stop DFS
+
+<p align="center">
+    <img src="res/feat-stop-dfs.svg" width="800">
+</p>
+
+**_Front-end_** invokes a function in **_Native module_**, from which a DFS packet (`GracefulShutdown`) is sent to **_dfs_receiver_**. When this packet is processed **_dfs_processor_**, it trigger _Graceful shutdown_ procedure in DFS.

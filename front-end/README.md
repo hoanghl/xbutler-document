@@ -4,21 +4,13 @@
 
 ## Feat: Fetch DFS status
 
-<p align="center">
-    <img src="res/feat-fetch-status.png" width="800">
-</p>
-
-**_Front-end_** periodically invokes native function to fetch DFS status. **_Native module_** then sends health check packet to DFS service. DFS protocol is used, particularly packet `StatusService` and `StatusServiceAck`.
+**_Front-end_** periodically invokes native function to fetch DFS status. **_Native module_** then sends health check packet to DFS service. DFS protocol is used, particularly packet `Heartbeat` and `HeartbeatAck`.
 
 Periodic invocation in **_Front-end_** is done by hook `useInterval` with _5-second_ interval. Additionally, **_Front-end_** only runs this flow when the screen is DFS only.
 
 ## Feat: Start DFS with configuration
 
-<p align="center">
-    <img src="res/feat-start-dfs.png" width="800">
-</p>
-
-It uses Android service to run DFS in background and avoid termination when the app is idle. Inside service, app creates new thread to excute **_dfs_processor_** to avoid UI's being blocked.
+It uses Android foreground service to run DFS in background and avoid termination when the app is idle. Inside service, app creates new thread to excute **_dfs_processor_** to avoid UI's being blocked.
 
 DFS initialization allows configuration to set up the following:
 
@@ -27,17 +19,9 @@ DFS initialization allows configuration to set up the following:
 
 ## Feat: Stop DFS
 
-<p align="center">
-    <img src="res/feat-stop-dfs.svg" width="800">
-</p>
-
 **_Front-end_** invokes a function in **_Native module_**, from which a DFS packet (`GracefulShutdown`) is sent to **_dfs_receiver_**. When this packet is processed **_dfs_processor_**, it trigger _Graceful shutdown_ procedure in DFS.
 
 ## Feat: Exchange log message between DFS and Front-end
-
-<p align="center">
-    <img src="res/log-exchange.drawio.svg" width="800">
-</p>
 
 **_Front-end_** invokes a function in **_Native module_**, from which a DFS packet (`GracefulShutdown`) is sent to **_dfs_receiver_**. When this packet is processed **_dfs_processor_**, it trigger _Graceful shutdown_ procedure in DFS.
 

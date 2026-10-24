@@ -1,98 +1,264 @@
-# Flows
+This document describes the flows (actions) among components within the system as well as in-charge packets. Packet formats: [packets.md](packets.md).
 
-This section describes the flows (actions) among components within the system as well as in-charge packets.
+# Initialization
 
-### 1. Initialization
+## 1. Associated nodes
 
-**In-charge components**: DNS, Master, Data
+- DNS
+- Master
+- Data
 
-**Flow**:
-For Master:
+## 2. Packets
 
-1. Master sends Notify to DNS
+- `Notify`: Master → DNS, Data → Master
+- `AskIP`: Data → DNS
+- `AskIPAck`: DNS → Data
 
-For Data:
+## 3. Flows
 
-1. Data sends AskIP to DNS
-2. DNS replies by AskIP containing the socket address of current Master
-3. Data sends Notify to Master
+### 3.1. Master
 
-### 2. Read data
+1. Master sends Notify to DNS [`Notify`]
 
-**In-charge components**: Client; DNS; Current Master;1 Data node
+### 3.2. Data
 
-**Flow**:
+1. Data sends AskIP to DNS [`AskIP`]
+2. DNS replies with the socket address of the current Master [`AskIPAck`]
+3. Data sends Notify to Master [`Notify`]
 
-1. Client connects to DNS to ask the IP of current Master [packet AskIP]
-2. DNS responses the IP [packet *AskIPAck*]
-3. Client connects to the current Master to ask to read specific file: [packet *RequestFromClient*]
-4. Master responses the IP of the Data node is holding file replica [packet *ResponseNodeIp*]
-5. Client connects to Data node to get file [packet *RequestFromClient*]
-6. Data node responses the file binary [packet *DataNodeSendData*]
-7. Data node sends ACK for finishing reading process [packet *ClientRequestAck*]
+## 4. Special cases
 
-### 3. Send data
+### 4.1. DNS does not know the Master yet
 
-**In-charge components**: Client;DNS;Current Master;2 Data nodes
+- DNS replies with an empty `AskIPAck` payload
 
-**Flow**:
+### 4.2. Backup Master starts
 
-1. Client connects to DNS to ask the IP of current Master [packet *AskIp*]
-2. DNS responses the IP [packet *AskIpAck*]
-3. Client connects to the current Master to ask to write specific file [packet *RequestFromClient*]
-4. Master responses the IP of a receiving node (this node can either a Data node or Master node) is ready to receive file [packet *ResponseNodeIp*]
+- New Master sends Notify to the current Master [`Notify`]
 
-In this step, Master can designates itself or another Data node inside the network and embeds that node's address to packet _ResponseNodeIp_.
+# Read data
 
-5. Client connects to Receiving node to write file [packet *ClientUpload*]
-6. When client finishes writing, Receiving node:
-   1. notifies the Master node the writing process is done [packet *ClientRequestAck*]
-   1. sends ACK to client [packet *ClientUploadAck*]
-7. The current Master node selects the suitable Data node different from the one which is newly received file from the client and triggers [**_Replication process_**](#replication).
+## 1. Associated nodes
 
-### 4. Heartbeat
+- Client
+- DNS
+- Current Master
+- 1 Data node
 
-**In-charge components**: Current Master ; Backup Master ; all Data nodes
+## 2. Packets
 
-**Flow**:
-Periodically, each Data node sends a heartbeat to report the health status to Master.
+- `AskIP`: Client → DNS
+- `AskIPAck`: DNS → Client
+- `RequestFromClient`: Client → Current Master, Client → Data node
+- `ResponseNodeIp`: Current Master → Client
+- `DataNodeSendData`: Data node → Client
+- `ClientRequestAck`: Data node → Current Master
 
-1. Node A sends heartbeat to B [packet *Heartbeat*]
-2. B sends ACK back to A [packet *HeartbeatAck*]
+## 3. Flows
 
-### 5. Fault tolerance on Data node
+1. Client connects to DNS to ask the IP of current Master [`AskIP`]
+2. DNS responds with the IP [`AskIPAck`]
+3. Client connects to the current Master to ask to read a specific file [`RequestFromClient`]
+4. Master responds with the IP of the Data node holding a file replica [`ResponseNodeIp`]
+5. Client connects to the Data node to get the file [`RequestFromClient`]
+6. Data node responds with the file binary [`DataNodeSendData`]
+7. Data node sends ACK to the Master for finishing the reading process [`ClientRequestAck`]
 
-**In-charge components**: Current Master; 2 Data nodes
+## 4. Special cases
 
-**Flow**:
+### 4.1. File is being written
 
-1. After 2 heartbeats from current Master but the Data node (denote A) doesn’t response, the current Master looks up for each file X held by A, which Data node (denote B) is holding a replica
-2. For each X and B, the current Master triggers the [**_Replication_**](#7-replication) process.
+- No client can read a file while another client is writing it ([Consistency guarantee](../specification.md#consistency-guarantee))
 
-### 6. Fault tolerance on Master node
+# Send data
 
-**In-charge components**: Current Master;backup Master
+## 1. Associated nodes
 
-**Flow**:
+- Client
+- DNS
+- Current Master
+- 2 Data nodes
 
-1. After 2 heartbeats from backup Master but the current Master doesn’t response, the backup Master notifies all Data nodes that it now is becoming the current Data node
-2. New current Master node updates its IP to DNS server
+## 2. Packets
 
-### 7. State synchronization
+- `AskIP`: Client → DNS
+- `AskIPAck`: DNS → Client
+- `RequestFromClient`: Client → Current Master
+- `ResponseNodeIp`: Current Master → Client
+- `ClientUpload`: Client → Receiving node
+- `ClientRequestAck`: Receiving node → Current Master
+- `ClientUploadAck`: Receiving node → Client
+- [Replication](#replication) packets
 
-**In-charge components**: Current Master node; backup Master node
+## 3. Flows
 
-**Flow**:
+1. Client connects to DNS to ask the IP of current Master [`AskIP`]
+2. DNS responds with the IP [`AskIPAck`]
+3. Client connects to the current Master to ask to write a specific file [`RequestFromClient`]
+4. Master responds with the IP of a receiving node (either a Data node or the Master) that is ready to receive the file [`ResponseNodeIp`]
+5. Client connects to the receiving node to write the file [`ClientUpload`]
+6. When the client finishes writing, the receiving node:
+   1. notifies the Master that the writing process is done [`ClientRequestAck`]
+   2. sends ACK to the client [`ClientUploadAck`]
+7. The current Master selects a suitable Data node, different from the one that just received the file, and triggers [Replication](#replication)
 
-1. After **_30 seconds_**, the current Master Node synchronizes its current state to the backup Master [packet *StateSync*]
-2. After receiving, the backup Master sends ACK [packet *StateSyncAck*]
+## 4. Special cases
 
-### 8. Replication
+### 4.1. Master designates itself
 
-[Link](replication.md)
+- In step 4, Master can designate itself or another Data node inside the network and embeds that node's address in `ResponseNodeIp`
 
-### 9. Graceful shutdown of nodes/clients
+### 4.2. File is being read or written by another client
 
-Each node/client, during starting up, initializes 3 different threads to handle 3 dedicated tasks. Thus, graceful shutdown is procedure to gracefully shutdown those threads.
+- Master permits a single writer and no readers while a file is being written ([Consistency guarantee](../specification.md#consistency-guarantee))
 
-[Link](gracefully_shutdown.md)
+# Heartbeat
+
+## 1. Associated nodes
+
+- Current Master
+- Backup Master
+- All Data nodes
+
+## 2. Packets
+
+- `Heartbeat`: Current Master → Data node, Current Master → Backup Master, Backup Master → Current Master
+- `HeartbeatAck`: Data node → Current Master, Current Master → Backup Master, Backup Master → Current Master
+
+## 3. Flows
+
+Periodically, the current Master checks the health status of each Data node, and the current and backup Master check each other.
+
+1. Node A sends heartbeat to B [`Heartbeat`]
+2. B sends ACK back to A [`HeartbeatAck`]
+
+## 4. Special cases
+
+### 4.1. No response to 2 consecutive heartbeats
+
+- Data node down: the current Master triggers [Fault tolerance on Data node](#fault-tolerance-on-data-node)
+- Current Master down: the backup Master triggers [Fault tolerance on Master node](#fault-tolerance-on-master-node)
+
+# Fault tolerance on Data node
+
+## 1. Associated nodes
+
+- Current Master
+- 2 Data nodes
+
+## 2. Packets
+
+- `Heartbeat`, `HeartbeatAck`: detect the down node
+- [Replication](#replication) packets
+
+## 3. Flows
+
+1. After 2 heartbeats from the current Master that the Data node (denote A) doesn't respond to, the current Master looks up, for each file X held by A, which Data node (denote B) is holding a replica
+2. For each X and B, the current Master triggers [Replication](#replication)
+
+# Fault tolerance on Master node
+
+## 1. Associated nodes
+
+- Current Master
+- Backup Master
+- All Data nodes
+- DNS
+
+## 2. Packets
+
+- `Heartbeat`, `HeartbeatAck`: detect the down Master
+- `Notify`: new Master → DNS
+
+## 3. Flows
+
+1. After 2 heartbeats from the backup Master that the current Master doesn't respond to, the backup Master notifies all Data nodes that it is now the current Master [packet not specified]
+2. New current Master updates its IP to the DNS server [`Notify`]
+
+# State synchronization
+
+## 1. Associated nodes
+
+- Current Master
+- Backup Master
+
+## 2. Packets
+
+- `StateSync`: Current Master → Backup Master
+- `StateSyncAck`: Backup Master → Current Master
+
+## 3. Flows
+
+1. Every **30 seconds**, the current Master synchronizes its current state to the backup Master [`StateSync`]
+2. After receiving, the backup Master sends ACK [`StateSyncAck`]
+
+# Replication
+
+## 1. Associated nodes
+
+- Current Master
+- `N` Data nodes: `N` is applied universally across the network and is specified at start-up
+
+## 2. Packets
+
+- `RequestSendReplica`: Current Master → Data node
+- `SendReplica`: Data node → Data node
+- `SendReplicaAck`: Data node → Current Master
+
+## 3. Flows
+
+Triggered in 2 scenarios:
+
+- A file is newly written (uploaded) by a client
+- A Data node is down
+
+Assume 2 Data nodes, A and B, where A holds the file X to be replicated:
+
+1. Current Master selects a new suitable Data node to store the file
+2. Current Master notifies A to send X to B [`RequestSendReplica`]
+3. A sends X to B [`SendReplica`]
+4. Both A and B send ACK to the current Master [`SendReplicaAck`]
+5. Master updates the in-memory database about which nodes are holding X
+
+Data node selection: Master chooses the Data node holding the fewest files. The same strategy applies in both Send data and Replication.
+
+## 4. Special cases
+
+### 4.1. Fewer nodes than `N`
+
+- Re-run Replication when a new node joins (planned, see [BACKLOG](../BACKLOG.md))
+
+# Graceful shutdown
+
+## 1. Associated nodes
+
+- Every node (Master, Data) and client
+
+## 2. Packets
+
+- `GracefulShutdown`: Front-end → Master / Data node
+
+## 3. Flows
+
+Each node (Master, Data) and client holds 3 threads, initialized at start-up:
+
+- Processor thread (**P**): handles every logic
+- Receiver thread (**R**): receives packets sent from other nodes/clients
+- Sender thread (**S**): delivers packets crafted by the Processor thread
+
+Graceful shutdown is triggered by **P**, e.g. when the front-end sends `GracefulShutdown`. A shutdown flag **F** is shared among the 3 threads: only **P** can modify it, the other threads read it. In parallel, **S** and **R** each shut down in their own way.
+
+### 3.1. Receiver thread
+
+The main loop of **R** receives incoming packets with `listener.incoming()`:
+
+1. **P** sets **F** to true
+2. **P** connects to **R** with `TcpStream::connect`
+3. The connection from **P** wakes **R** from the `listener.incoming()` loop; **R** reads **F** and breaks the loop
+
+### 3.2. Sender thread
+
+The main loop of **S** is an infinite loop; at the beginning of the loop body, **S** checks with a timeout whether **P** has sent a packet via the channel. Therefore, **P** only needs to set the flag:
+
+1. **P** sets **F** to true
+2. **S** reads **F** at the beginning of the loop body and breaks the loop
